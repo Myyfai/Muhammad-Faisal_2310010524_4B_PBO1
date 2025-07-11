@@ -94,8 +94,10 @@ public boolean isTersedia() {
 7. **Encapsulation** adalah konsep menyembunyikan data dengan membuat atribut menjadi private dan hanya bisa diakses melalui method. Pada kode ini, semua atribut dideklarasikan sebagai `private` dan hanya bisa diakses melalui method getter dan setter.
 
 ```bash
-private String nama;
-private String npm;
+private String idKomputer;
+private String spesifikasi;
+private boolean tersedia;
+private double hargaVIP;
 ```
 
 8. **Inheritance** adalah konsep di mana sebuah class bisa mewarisi property dan method dari class lain. Pada kode ini, `KomputerVIP` mewarisi `Komputer` dengan sintaks `extends`.
