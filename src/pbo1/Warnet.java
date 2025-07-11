@@ -12,6 +12,7 @@ public class Warnet {
         jumlahKomputer = 0;
     }
 
+    // Method tambah komputer biasa
     public void tambahKomputer(String id, String spesifikasi) {
         if (jumlahKomputer < MAX_KOMPUTER) {
             daftarKomputer[jumlahKomputer] = new Komputer(id, spesifikasi);
@@ -22,6 +23,7 @@ public class Warnet {
         }
     }
 
+    // Method tambah komputer VIP
     public void tambahKomputerVIP(String id, String spesifikasi, double hargaVIP) {
         if (jumlahKomputer < MAX_KOMPUTER) {
             daftarKomputer[jumlahKomputer] = new KomputerVIP(id, spesifikasi, hargaVIP);
@@ -32,6 +34,7 @@ public class Warnet {
         }
     }
 
+    // Tampilkan daftar komputer
     public void tampilkanDaftarKomputer() {
         if (jumlahKomputer == 0) {
             System.out.println("Belum ada data komputer.");
@@ -43,6 +46,7 @@ public class Warnet {
         }
     }
 
+    // Pinjam komputer
     public void pinjamKomputer(int index) {
         if (index >= 0 && index < jumlahKomputer) {
             Komputer komputer = daftarKomputer[index];
@@ -57,6 +61,7 @@ public class Warnet {
         }
     }
 
+    // Kembalikan komputer
     public void kembalikanKomputer(int index) {
         if (index >= 0 && index < jumlahKomputer) {
             Komputer komputer = daftarKomputer[index];
@@ -71,6 +76,7 @@ public class Warnet {
         }
     }
 
+    // Hitung biaya rental
     public void hitungBiaya(int index, double jam) {
         if (index >= 0 && index < jumlahKomputer) {
             Komputer komputer = daftarKomputer[index];
@@ -79,7 +85,7 @@ public class Warnet {
                 double total = komputerVIP.getHargaVIP() * jam;
                 System.out.printf("Total biaya rental: Rp%.0f\n", total);
             } else {
-                double total = 5000 * jam;
+                double total = 5000 * jam; // Tarif normal
                 System.out.printf("Total biaya rental: Rp%.0f\n", total);
             }
         } else {
@@ -87,6 +93,7 @@ public class Warnet {
         }
     }
 
+    // Main method
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Warnet warnet = new Warnet();
@@ -101,8 +108,17 @@ public class Warnet {
             System.out.println("6. Hitung Biaya Rental");
             System.out.println("7. Keluar");
             System.out.print("Pilih menu: ");
-            int pilihan = scanner.nextInt();
-            scanner.nextLine();
+
+            // Validasi input agar tidak crash jika user input huruf
+            String inputMenu = scanner.nextLine();
+            int pilihan;
+
+            try {
+                pilihan = Integer.parseInt(inputMenu);
+            } catch (NumberFormatException e) {
+                System.out.println("Input tidak valid. Harap masukkan angka antara 1 sampai 7.");
+                continue;
+            }
 
             switch (pilihan) {
                 case 1 -> {
@@ -119,35 +135,108 @@ public class Warnet {
                     System.out.print("Masukkan spesifikasi: ");
                     String specVip = scanner.nextLine();
                     System.out.print("Masukkan harga VIP per jam: ");
-                    double harga = scanner.nextDouble();
-                    scanner.nextLine();
+
+                    String inputHarga = scanner.nextLine();
+                    double harga;
+                    try {
+                        harga = Double.parseDouble(inputHarga);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Harga harus berupa angka!");
+                        break;
+                    }
+
                     warnet.tambahKomputerVIP(idVip, specVip, harga);
                 }
 
                 case 3 -> warnet.tampilkanDaftarKomputer();
 
                 case 4 -> {
-                    System.out.print("Masukkan nomor komputer yang ingin dipinjam: ");
-                    int idxPinjam = scanner.nextInt() - 1;
-                    scanner.nextLine();
-                    warnet.pinjamKomputer(idxPinjam);
+                    if (warnet.jumlahKomputer == 0) {
+                        System.out.println("Belum ada komputer yang ditambahkan.");
+                        break;
+                    }
+
+                    System.out.print("Masukkan nomor komputer yang ingin dipinjam (1-" + warnet.jumlahKomputer + "): ");
+                    String inputPinjam = scanner.nextLine();
+
+                    int idxPinjam;
+                    try {
+                        idxPinjam = Integer.parseInt(inputPinjam);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Input harus berupa angka.");
+                        break;
+                    }
+
+                    if (idxPinjam < 1 || idxPinjam > warnet.jumlahKomputer) {
+                        System.out.println("Nomor komputer tidak valid.");
+                        break;
+                    }
+
+                    warnet.pinjamKomputer(idxPinjam - 1);
                 }
 
                 case 5 -> {
-                    System.out.print("Masukkan nomor komputer yang dikembalikan: ");
-                    int idxKembali = scanner.nextInt() - 1;
-                    scanner.nextLine();
-                    warnet.kembalikanKomputer(idxKembali);
+                    if (warnet.jumlahKomputer == 0) {
+                        System.out.println("Belum ada komputer yang ditambahkan.");
+                        break;
+                    }
+
+                    System.out.print("Masukkan nomor komputer yang dikembalikan (1-" + warnet.jumlahKomputer + "): ");
+                    String inputKembali = scanner.nextLine();
+
+                    int idxKembali;
+                    try {
+                        idxKembali = Integer.parseInt(inputKembali);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Input harus berupa angka.");
+                        break;
+                    }
+
+                    if (idxKembali < 1 || idxKembali > warnet.jumlahKomputer) {
+                        System.out.println("Nomor komputer tidak valid.");
+                        break;
+                    }
+
+                    warnet.kembalikanKomputer(idxKembali - 1);
                 }
 
                 case 6 -> {
-                    System.out.print("Masukkan nomor komputer: ");
-                    int idxHitung = scanner.nextInt() - 1;
-                    scanner.nextLine();
+                    if (warnet.jumlahKomputer == 0) {
+                        System.out.println("Belum ada komputer yang ditambahkan.");
+                        break;
+                    }
+
+                    System.out.print("Masukkan nomor komputer (1-" + warnet.jumlahKomputer + "): ");
+                    String inputHitung = scanner.nextLine();
+
+                    int idxHitung;
+                    try {
+                        idxHitung = Integer.parseInt(inputHitung);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Input harus berupa angka.");
+                        break;
+                    }
+
+                    if (idxHitung < 1 || idxHitung > warnet.jumlahKomputer) {
+                        System.out.println("Nomor komputer tidak valid.");
+                        break;
+                    }
+
                     System.out.print("Masukkan durasi rental (jam): ");
-                    double jam = scanner.nextDouble();
-                    scanner.nextLine();
-                    warnet.hitungBiaya(idxHitung, jam);
+                    String inputJam = scanner.nextLine();
+                    double jam;
+                    try {
+                        jam = Double.parseDouble(inputJam);
+                        if (jam <= 0) {
+                            System.out.println("Durasi harus lebih besar dari nol.");
+                            break;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Durasi harus berupa angka.");
+                        break;
+                    }
+
+                    warnet.hitungBiaya(idxHitung - 1, jam);
                 }
 
                 case 7 -> {
@@ -156,7 +245,7 @@ public class Warnet {
                     return;
                 }
 
-                default -> System.out.println("Pilihan tidak valid.");
+                default -> System.out.println("Pilihan tidak valid. Silakan pilih antara 1 sampai 7.");
             }
         }
     }

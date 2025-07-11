@@ -17,7 +17,7 @@ public class KomputerVIP extends Komputer {
     }
     
     @Override
-    public String toString() {
-        return super.toString() + ", Harga VIP: Rp" + hargaVIP;
+        public String toString() {
+            return super.toString() + ", Harga VIP: Rp" + hargaVIP;
     }
 }
