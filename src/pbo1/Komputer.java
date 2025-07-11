@@ -30,7 +30,7 @@ public class Komputer {
     public String getSpesifikasi() {
         return spesifikasi;
     }
-
+    
     public boolean isTersedia() {
         return tersedia;
     }

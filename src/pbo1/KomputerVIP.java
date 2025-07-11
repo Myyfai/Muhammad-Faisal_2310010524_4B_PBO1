@@ -15,7 +15,7 @@ public class KomputerVIP extends Komputer {
     public void setHargaVIP(double hargaVIP) {
         this.hargaVIP = hargaVIP;
     }
-
+    
     @Override
     public String toString() {
         return super.toString() + ", Harga VIP: Rp" + hargaVIP;
